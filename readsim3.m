@@ -123,8 +123,6 @@ if nargin < 1
   position_within_file = 0; % get all
 end
 if nargin < 2
-% filename = 'C:\Users\Erik\Documents\polimi\spectrometer\simion_refs\sim.txt'; % default for where to find output log file
-% filename = 'C:\Users\Erik\Documents\spectrometer\simion_dir_3\sim.txt';
   filename = 'sim.txt'; % default for where to find output log file
 end
 flys = NaN; % in case of error

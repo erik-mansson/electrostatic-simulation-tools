@@ -1,7 +1,7 @@
 -- Script for a SIMION workbench (.iob & .pa0) by Erik P. Månsson.
--- Lund University 2010-2014. IFN-CNR/Politecnico di Milano 2014-2016. FS-ATTO CFEL DESY 2017-2020.
+-- Lund University 2010-2014. IFN-CNR/Politecnico di Milano 2014-2017. FS-ATTO CFEL DESY 2017-2020.
 -- 
--- This file should be named like the model (.pa0) file but with the .lua extnsion, and some constants
+-- This file should be named like the model (.pa0) file but with the .lua extension, and some constants
 -- need to be defined suitable for the model's geometry, down to the source_point_y, source_point_z, 
 -- VERTICAL_CENTRE and Y_CENTRE coordinates, while the bulk of the code and most variables are model-independent.
 -- 
