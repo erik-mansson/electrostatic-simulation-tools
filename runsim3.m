@@ -377,6 +377,7 @@ if any(strcmp(variables, 'initial_vz'))
   % Handle old code by just renaming the variable.
   variables{strcmp(variables, 'initial_vz')} = 'initial_v_vertical';
 end
+initial_v_vertical = get_argument_from_cells(variables, 'initial_v_vertical', 'num', 0); % [m/s] store this value which we wil put in the output source.initial_v_vertical
 
 i = 1;
 adjustment_script = '';
@@ -571,7 +572,7 @@ if nargout >= 1 % Also call readsim3 to read the logged data from the simulation
       if ~isfield(flys(i).source, 'initial_v_vertical')
         % Include jet velocity info, and translate back from the old bad name initial_vz to initial_v_vertical 
         % (z in Matlab & most of Lua-adjustable notation is the TOF-axis, not the vertical axis).
-        flys(i).source.initial_v_vertical = get_argument_from_cells(variables, 'initial_v_vertical', 'num', 0);
+        flys(i).source.initial_v_vertical = initial_v_vertical;
       end
       
     end

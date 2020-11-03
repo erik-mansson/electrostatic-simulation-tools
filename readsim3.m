@@ -82,7 +82,8 @@
 %                            mass [u]
 %                            charge [e]
 %                            energies [eV]       initial kinetic energy
-%                            elevation [degrees] of initial velocity
+%                            elevation [degrees] of initial velocity (NOTE: a nonzero initial_v_vertical affects the distribution of elevations, especially for low (meV) energies)
+%                            azimuth  [degrees] of initial velocity (NOTE: a nonzero initial_v_vertical affects the distribution of elevations, especially for low (meV) energies)
 %                            z0 [mm] initial axial coordinate (absolute) (time of flight axis)
 %                            y0 [mm] initial transverse position (absolute)
 %                            z  [mm] final axial coordinate (absolute) (time of flight axis) -- for telling whether
@@ -339,6 +340,8 @@ for index = 1:length(summary_starts)
   source = struct('ion_count',values(1), 'energy', values(2), ...
     'mass', values(3), 'charge', charge, ...
     'point_count',values(5), 'pattern',values(6), 'spacing',values(7));
+  % NOTE: runsim3 will append some more info, like source.initial_v_vertical, since it has access to more parameters than are specified in the log-file.
+  
   if count == 8
     % The Gaussian-in-FLY2 variant
     source.pattern = -1;

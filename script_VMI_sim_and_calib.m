@@ -297,7 +297,7 @@ for job = 1:size(names_workbenches_and_potentials,1)
     if ~isempty(source_point_offset_z) && isfinite(source_point_offset_z)
       variables{1,end+1}='source_point_offset_z'; variables{1,end+1} = source_point_offset_z; % [mm] along spectrometer (TOF) axis
     end
-    initial_v_vertical = offset_list(offset_index, 4); % to optionally specify via offset_list and its loop
+    initial_v_vertical = offset_list(offset_index, 4); % [m/s] to optionally specify via offset_list and its loop
     if ~isempty(initial_v_vertical) && isfinite(initial_v_vertical)
       variables{1,end+1}='initial_v_vertical'; variables{1,end+1} = initial_v_vertical; % [km/s] molecular beam velocity approx for helium (liquid water 1.5 but vapor probably lower). Insignificant velocity offset for electrons.
     else
@@ -491,7 +491,17 @@ for job = 1:size(names_workbenches_and_potentials,1)
       %plot(coords_bad(:,1), coords_bad(:,2), ['x' 'c'], 'MarkerSize',2);
       legend_strings =  [legend_strings; sprintf('%seV, %d misses', texformat_SI(f.source.energy,2), f.misses)];  
       %energies = [energies, f.source.energy]; % Seems OK to use f.source.energy, has four decimals in eV. 
-      energies = [energies, mean([f.source.energy f.trajectories.energies(1)])]; % For random/thermal energy (not a round value in eV) could possibly combine the per-trajectory value (more decimals) 
+      energy_including_jet = median(f.trajectories.energies); % [eV]
+      energy_by_jet = atomic_mass_unit * f.source.mass * (f.source.initial_v_vertical*1E3)^2 / 2 / eV; % [eV]
+      if (f.source.energy ~= round(f.source.energy) || f.source.energy == 0) && all(f.trajectories.energies >= 2 * energy_by_jet) && abs(f.source.energy - energy_including_jet) <= 1E-3
+        % Energy is not an integer in eV and there was no large jet velocity (compared to the energy due to the ionization/fragmentation).
+        % Combine the rounded four-decimal value from f.sourc.energy with the per-trajectory value (which has more decimals)
+        energies = [energies, mean([f.source.energy energy_including_jet])];
+      else
+        % With initial_v_vertical large compared to meV energy of cold ion, trajectories.energies varies a lot due to the angle 
+        % (it includes the initial_v_vertical in lab-fixed direction), so just use the f.source.energy.
+        energies = [energies, f.source.energy];
+      end
       %energy_deviation = ([f.source.energy f.trajectories.energies(2)] - original_energies(find_nearest(original_energies, f.source.energy, 1E-3))) / 1E-6 % DEBUG
       
       
